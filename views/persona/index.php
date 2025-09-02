@@ -26,7 +26,7 @@ require "../template/header.php";
                 <td>mark@info.com</td>
                 <td>
                     <a href="<?= BASE_URL ?>views/persona/editar-persona.php?p=1" class="btn btn-outline-primary btn-sm" title="Eliminar registro"><i class="fa-solid fa-user-pen"></i></a>
-                    <button class="btn btn-outline-danger btn-sm" title="Eliminar registro"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn btn-outline-danger btn-sm" title="Eliminar registro" onclick="fntDelPersona(1)"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
         </tbody>
