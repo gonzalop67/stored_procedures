@@ -1,10 +1,21 @@
-<?php 
+<?php
 require "../models/PersonaModel.php";
 
 $option = $_REQUEST["op"];
+$objPersona = new PersonaModel();
 
 if ($option == "listregistros") {
-    echo "Mostrar el listado de personas";
+    $arrResponse = array('status' => false, 'data' => "");
+    $arrPersona = $objPersona->getPersonas();
+
+    if (!empty($arrPersona)) {
+        $arrResponse['status'] = true;
+        $arrResponse['data'] = $arrPersona;
+    }
+
+    echo json_encode($arrResponse);
+
+    die();
 }
 
 if ($option == "registro") {
@@ -24,4 +35,3 @@ if ($option == "eliminar") {
 }
 
 die();
-?>

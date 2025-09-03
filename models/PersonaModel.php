@@ -10,8 +10,13 @@ class PersonaModel
     }
     public function getPersonas()
     {
+        $arrRegistros = array();
         $rs = $this->conexion->query("CALL select_personas()");
-        $rs = $rs->fetch_fields();
-        return $rs;
+
+        while ($obj = $rs->fetch_object()) {
+            array_push($arrRegistros, $obj);
+        }
+
+        return $arrRegistros;
     }
 }
