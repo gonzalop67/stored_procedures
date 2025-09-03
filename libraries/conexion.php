@@ -2,7 +2,7 @@
 require_once "../config/config.php";
 class Conexion
 {
-    static function connect()
+    public static function connect()
     {
         $mysql = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $mysql->set_charset(DB_CHARSET);
