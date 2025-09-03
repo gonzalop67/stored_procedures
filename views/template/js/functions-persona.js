@@ -60,8 +60,13 @@ if (document.querySelector("#frmRegistro")) {
         cache: "no-cache",
         body: data,
       });
-      //   json = await resp.json();
-      console.log(resp);
+      json = await resp.json();
+      if (json.status) {
+        swal("Guardar", json.msg, "success");
+        frmRegistro.reset();
+      } else {
+        swal("Guardar", json.msg, "error");
+      }
     } catch (error) {
       console.log("Ocurrió un error: " + error);
     }

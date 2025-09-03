@@ -25,8 +25,25 @@ if ($option == "listregistros") {
 }
 
 if ($option == "registro") {
-    print_r($_POST);
-    echo "Registrar personas";
+    if ($_POST) {
+        if (empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtEmail'])) {
+            $arrResponse = array('status' => false, 'msg' => 'Error de datos');
+        } else {
+            $strNombre = ucwords(trim($_POST['txtNombre']));
+            $strApellido = ucwords(trim($_POST['txtApellido']));
+            $intTelefono = trim($_POST['txtTelefono']);
+            $strEmail = strtolower(trim($_POST['txtEmail']));
+            $arrPersona = $objPersona->insertPersona($strNombre, $strApellido, $intTelefono, $strEmail);
+            if ($arrPersona->id > 0) {
+                $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente');
+            } else {
+                $arrResponse = array('status' => false, 'msg' => 'Error al guardar o correo ya existe');
+            }
+        }
+        echo json_encode($arrResponse);
+    }
+
+    die();
 }
 
 if ($option == "verregistro") {
