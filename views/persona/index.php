@@ -18,17 +18,6 @@ require "../template/header.php";
             </tr>
         </thead>
         <tbody id="tblBodyPersonas">
-            <!-- <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>4567890</td>
-                <td>mark@info.com</td>
-                <td>
-                    <a href="<?= BASE_URL ?>views/persona/editar-persona.php?p=1" class="btn btn-outline-primary btn-sm" title="Eliminar registro"><i class="fa-solid fa-user-pen"></i></a>
-                    <button class="btn btn-outline-danger btn-sm" title="Eliminar registro" onclick="fntDelPersona(1)"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr> -->
         </tbody>
     </table>
 </main>

@@ -1,7 +1,7 @@
 async function getPersona() {
   try {
     let resp = await fetch(
-      "http://localhost/tareas/controllers/Persona.php?op=listregistros"
+      base_url + "controllers/Persona.php?op=listregistros"
     );
     json = await resp.json();
     if (json.status) {
@@ -15,7 +15,7 @@ async function getPersona() {
                                 <td>${item.apellido}</td>
                                 <td>${item.telefono}</td>
                                 <td>${item.email}</td>
-                                <td>Options</td>
+                                <td>${item.options}</td>
                             </tr>`;
         document.querySelector("#tblBodyPersonas").appendChild(newtr);
       });
