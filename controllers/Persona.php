@@ -25,6 +25,7 @@ if ($option == "listregistros") {
 }
 
 if ($option == "registro") {
+    print_r($_POST);
     echo "Registrar personas";
 }
 

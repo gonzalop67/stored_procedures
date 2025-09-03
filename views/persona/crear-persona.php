@@ -7,7 +7,7 @@ require "../template/header.php";
     <a href="<?= BASE_URL ?>/views/persona">Listar Personas</a>
 
     <br><br>
-    <form>
+    <form id="frmRegistro">
         <div class="mb-3">
             <label for="txtNombre" class="form-label">Nombres</label>
             <input type="text" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombres" required>
@@ -31,3 +31,5 @@ require "../template/header.php";
 <?php
 require "../template/footer.php";
 ?>
+
+<script src="../template/js/functions-persona.js"></script>
