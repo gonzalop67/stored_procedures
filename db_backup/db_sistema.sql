@@ -1,0 +1,204 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 04, 2025 at 09:59 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `db_sistema`
+--
+
+DELIMITER $$
+--
+-- Procedures
+--
+DROP PROCEDURE IF EXISTS `delete_persona`$$
+CREATE PROCEDURE `delete_persona` (`personaid` BIGINT)   begin
+		declare existe_persona int;
+		DECLARE id INT;
+		set existe_persona = (select count(*) from persona where idpersona = personaid);
+		if existe_persona > 0 then
+			delete from persona where idpersona = personaid;
+			set id = 1;
+		else 
+			set id = 0;
+		end if;
+		select id;
+	end$$
+
+DROP PROCEDURE IF EXISTS `insert_persona`$$
+CREATE PROCEDURE `insert_persona` (`nom` VARCHAR(100), `ape` VARCHAR(100), `tel` BIGINT, `emailp` VARCHAR(100))   begin
+		declare existe_persona int;
+		declare id int;
+		set existe_persona = (select count(*) from persona where email = emailp);
+		if existe_persona = 0 then
+			insert into persona(nombre,apellido,telefono,email) values(nom,ape,tel,emailp);
+			set id = last_insert_id();
+		else 
+			set id = 0;
+		end if;
+		select id;
+	end$$
+
+DROP PROCEDURE IF EXISTS `search_persona`$$
+CREATE PROCEDURE `search_persona` (`busqueda` VARCHAR(100))   begin
+		select idpersona,nombre,apellido,telefono,email from persona WHERE 
+		(nombre like concat('%',busqueda,'%') or
+		apellido LIKE CONCAT('%',busqueda,'%') OR
+		telefono LIKE CONCAT('%',busqueda,'%') OR
+		email LIKE CONCAT('%',busqueda,'%')) 
+		and status != '0';
+	end$$
+
+DROP PROCEDURE IF EXISTS `select_persona`$$
+CREATE PROCEDURE `select_persona` (`id` BIGINT)   begin
+		select idpersona,nombre,apellido,telefono,email from persona WHERE idpersona=id AND status != '0';
+	end$$
+
+DROP PROCEDURE IF EXISTS `select_personas`$$
+CREATE PROCEDURE `select_personas` ()   begin
+		select idpersona,nombre,apellido,telefono,email from persona where status != '0' order by idpersona desc;
+	end$$
+
+DROP PROCEDURE IF EXISTS `update_persona`$$
+CREATE PROCEDURE `update_persona` (`id` BIGINT, `nom` VARCHAR(100), `ape` VARCHAR(100), `tel` BIGINT, `emailp` VARCHAR(100))   begin
+		declare existe_persona int;
+		DECLARE existe_email INT;
+		declare idp int;
+		set existe_persona = (select count(*) from persona where idpersona = id);
+		if existe_persona > 0 then
+			SET existe_email = (SELECT COUNT(*) FROM persona WHERE email = emailp and idpersona != id);
+			if existe_email = 0 then
+				update persona set nombre=nom, apellido=ape, telefono=tel, email=emailp where idpersona = id;
+				set idp = id;
+			else 
+				set idp = 0;
+			end if;
+			
+		else 
+			set idp = 0;
+		end if;
+		select idp;
+	end$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `persona`
+--
+
+DROP TABLE IF EXISTS `persona`;
+CREATE TABLE `persona` (
+  `idpersona` bigint(20) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `telefono` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `datecreated` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `persona`
+--
+
+INSERT INTO `persona` (`idpersona`, `nombre`, `apellido`, `telefono`, `email`, `datecreated`, `status`) VALUES
+(1, 'Abel', 'OSH', '648978', 'info@abelosh.com', '2025-09-01 10:18:48', 1),
+(2, 'Enrique', 'Castillo', '45657987', 'enrique@info.com', '2025-09-01 10:25:13', 1),
+(3, 'Fernando', 'Pérez', '46897878', 'info@abelosh.com', '2021-07-21 00:00:00', 1),
+(5, 'Jairo', 'Cadena', '995939899', 'cadenaemerson1@gmail.com', '2025-09-01 11:13:13', 1),
+(6, 'Gabriela', 'Cayambe', '999088267', 'gabrielacayambe12@gmail.com', '2025-09-01 11:14:57', 1),
+(7, 'Walter', 'Cuero', '985833993', 'cuerovinicio5@gmail.com', '2025-09-01 11:16:50', 1),
+(8, 'Octavio', 'Chicaiza', '994650683', 'walterin008@gmail.com', '2025-09-01 11:18:06', 1),
+(9, 'Marlene', 'Chicaiza', '997187146', 'mariachicaiza744@gmail.com', '2025-09-01 11:18:58', 1),
+(12, 'Nicolás', 'Escobar', '45657987', 'nico.escobar@info.com', '2025-09-03 06:24:32', 1),
+(13, 'Gustavo Germán', 'Benavides Ortiz', '593987708053', 'germang.benavides@educacion.gob.ec', '2025-09-03 06:25:27', 1),
+(16, 'Gonzalo Nicolás', 'Peñaherrera Escobar', '984893415', 'chalo_quito@hotmail.com', '2025-09-03 12:59:27', 1),
+(18, 'William Oswaldo', 'Trujillo Realpe', '1234567890', 'william@example.com', '2025-09-03 13:09:25', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tarea`
+--
+
+DROP TABLE IF EXISTS `tarea`;
+CREATE TABLE `tarea` (
+  `idtarea` bigint(20) NOT NULL,
+  `nombretarea` varchar(100) NOT NULL,
+  `descripcion` text NOT NULL,
+  `fecha_inicio` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_fin` datetime DEFAULT NULL,
+  `personaid` bigint(20) NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tarea`
+--
+
+INSERT INTO `tarea` (`idtarea`, `nombretarea`, `descripcion`, `fecha_inicio`, `fecha_fin`, `personaid`, `status`) VALUES
+(2, 'Maquetar Web', 'Maquetar con HTML y CSS', '2021-08-26 00:00:00', NULL, 1, 'Activo');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `persona`
+--
+ALTER TABLE `persona`
+  ADD PRIMARY KEY (`idpersona`);
+
+--
+-- Indexes for table `tarea`
+--
+ALTER TABLE `tarea`
+  ADD PRIMARY KEY (`idtarea`),
+  ADD KEY `tarea_persona_fk` (`personaid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `persona`
+--
+ALTER TABLE `persona`
+  MODIFY `idpersona` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `tarea`
+--
+ALTER TABLE `tarea`
+  MODIFY `idtarea` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tarea`
+--
+ALTER TABLE `tarea`
+  ADD CONSTRAINT `tarea_persona_fk` FOREIGN KEY (`personaid`) REFERENCES `persona` (`idpersona`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
