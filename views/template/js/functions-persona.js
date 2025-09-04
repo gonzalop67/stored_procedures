@@ -1,4 +1,5 @@
 async function getPersona() {
+  document.querySelector("#tblBodyPersonas").innerHTML = "";
   try {
     let resp = await fetch(
       base_url + "controllers/Persona.php?op=listregistros"
@@ -222,7 +223,10 @@ async function fntBuscarRegistros() {
                               <td>${item.apellido}</td>
                               <td>${item.telefono}</td>
                               <td>${item.email}</td>
-                              <td></td>
+                              <td>
+                              <a href="${base_url}views/persona/editar-persona.php?p=${item.idpersona}" class="btn btn-outline-primary btn-sm" title="Eliminar registro"><i class="fa-solid fa-user-pen"></i></a>
+                              <button class="btn btn-outline-danger btn-sm" title="Eliminar registro" onclick="fntDelPersona(${item.idpersona})"><i class="fa-solid fa-trash"></i></button>
+                              </td>
                           </tr>`;
         document.querySelector("#tblBodyPersonas").appendChild(newtr);
       });
