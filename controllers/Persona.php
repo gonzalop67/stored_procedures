@@ -103,7 +103,17 @@ if ($option == "eliminar") {
 
 if ($option == "buscar") {
     if ($_POST) {
-        print_r($_POST);
+        if (empty($_POST['txtBuscar'])) {
+            $arrResponse = array('status' => false, 'msg' => 'Error de datos');
+        } else {
+            $strBuscar = trim($_POST['txtBuscar']);
+            $arrResponse = array('status' => false, 'found' => 0, 'data' => '');
+            $arrInfo = $objPersona->getPersonasBusqueda($strBuscar);
+            if (!empty($arrInfo)) {
+                $arrResponse = array('status' => true, 'found' => count($arrInfo), 'data' => $arrInfo);
+            }
+        }
+        echo json_encode($arrResponse);
     }
 }
 

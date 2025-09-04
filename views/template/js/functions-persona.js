@@ -200,7 +200,7 @@ let inputSearch = document.querySelector("#txtBuscar");
 inputSearch.addEventListener("keyup", fntInputSearch, true);
 
 async function fntBuscarRegistros() {
-  document.querySelector("#tblPersonas").innerHTML = "";
+  document.querySelector("#tblBodyPersonas").innerHTML = "";
   try {
     let formData = new FormData(frmSearch);
     let resp = await fetch(base_url + "controllers/Persona.php?op=buscar", {
@@ -210,13 +210,23 @@ async function fntBuscarRegistros() {
       body: formData,
     });
     console.log(resp);
-    //   json = await resp.json();
-    //   if (json.status) {
-    //     swal("Eliminar", json.msg, "success");
-    //     document.querySelector("#row_" + id).remove();
-    //   } else {
-    //     swal("Eliminar", json.msg, "error");
-    //   }
+    json = await resp.json();
+    if (json.status) {
+      let data = json.data;
+      data.forEach((item) => {
+        let newtr = document.createElement("tr");
+        newtr.id = "row_" + item.idpersona;
+        newtr.innerHTML = `<tr>
+                              <th scope="row">${item.idpersona}</th>
+                              <td>${item.nombre}</td>
+                              <td>${item.apellido}</td>
+                              <td>${item.telefono}</td>
+                              <td>${item.email}</td>
+                              <td></td>
+                          </tr>`;
+        document.querySelector("#tblBodyPersonas").appendChild(newtr);
+      });
+    }
   } catch (error) {
     console.log("Ocurrió un error: " + error);
   }

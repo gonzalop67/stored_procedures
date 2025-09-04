@@ -47,4 +47,14 @@ class PersonaModel
         $sql = $sql->fetch_object();
         return $sql;
     }
+
+    public function getPersonasBusqueda(string $busqueda)
+    {
+        $arrRegistros = array();
+        $sql = $this->conexion->query("CALL search_persona('{$busqueda}')");
+        while ($obj = $sql->fetch_object()) {
+            array_push($arrRegistros, $obj);
+        }
+        return $arrRegistros;
+    }
 }
