@@ -27,6 +27,13 @@ class PersonaModel
         return $sql;
     }
 
+    public function updatePersona(int $idpersona, string $nombre, string $apellido, int $telefono, string $email)
+    {
+        $sql = $this->conexion->query("CALL update_persona('{$idpersona}','{$nombre}','{$apellido}','{$telefono}','{$email}')");
+        $sql = $sql->fetch_object();
+        return $sql;
+    }
+
     public function getPersona(int $idpersona)
     {
         $sql = $this->conexion->query("CALL select_persona('{$idpersona}')");

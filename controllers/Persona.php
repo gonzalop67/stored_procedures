@@ -62,7 +62,26 @@ if ($option == "verregistro") {
 }
 
 if ($option == "actualizar") {
-    echo "Actualizar una personas";
+    if ($_POST) {
+        if (empty($_POST['txtId']) || empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtEmail'])) {
+            $arrResponse = array('status' => false, 'msg' => 'Error de datos');
+        } else {
+            $intId = intval($_POST['txtId']);
+            $strNombre = ucwords(trim($_POST['txtNombre']));
+            $strApellido = ucwords(trim($_POST['txtApellido']));
+            $intTelefono = trim($_POST['txtTelefono']);
+            $strEmail = strtolower(trim($_POST['txtEmail']));
+            $arrPersona = $objPersona->updatePersona($intId, $strNombre, $strApellido, $intTelefono, $strEmail);
+            if ($arrPersona->idp > 0) {
+                $arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente');
+            } else {
+                $arrResponse = array('status' => false, 'msg' => 'Error al actualizar o correo ya existe');
+            }
+        }
+        echo json_encode($arrResponse);
+    }
+
+    die();
 }
 
 if ($option == "eliminar") {

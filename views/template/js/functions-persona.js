@@ -100,3 +100,48 @@ async function fntMostrar() {
     console.log("Ocurrió un error: " + error);
   }
 }
+
+if (document.querySelector("#frmEditar")) {
+  let frmEditar = document.querySelector("#frmEditar");
+  frmEditar.onsubmit = function (e) {
+    e.preventDefault();
+    fntEditar();
+  };
+
+  async function fntEditar() {
+    let intId = document.querySelector("#txtId").value;
+    let strNombre = document.querySelector("#txtNombre").value;
+    let strApellido = document.querySelector("#txtApellido").value;
+    let intTelefono = document.querySelector("#txtTelefono").value;
+    let strEmail = document.querySelector("#txtEmail").value;
+
+    if (
+      intId == "" ||
+      strNombre == "" ||
+      strApellido == "" ||
+      intTelefono == "" ||
+      strEmail == ""
+    ) {
+      alert("Todos los campos son obligatorios.");
+      return;
+    }
+
+    try {
+      const data = new FormData(frmEditar);
+      let resp = await fetch(base_url + "controllers/Persona.php?op=actualizar", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        body: data,
+      });
+      json = await resp.json();
+      if (json.status) {
+        swal("Actualizar", json.msg, "success");
+      } else {
+        swal("Actualizar", json.msg, "error");
+      }
+    } catch (error) {
+      console.log("Ocurrió un error: " + error);
+    }
+  }
+}
