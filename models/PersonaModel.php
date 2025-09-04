@@ -26,4 +26,11 @@ class PersonaModel
         $sql = $sql->fetch_object();
         return $sql;
     }
+
+    public function getPersona(int $idpersona)
+    {
+        $sql = $this->conexion->query("CALL select_persona('{$idpersona}')");
+        $sql = $sql->fetch_object();
+        return $sql;
+    }
 }

@@ -47,7 +47,18 @@ if ($option == "registro") {
 }
 
 if ($option == "verregistro") {
-    echo "Ver una personas";
+    if ($_POST) {
+        $idpersona = intval($_POST['idpersona']);
+        $arrPersona = $objPersona->getPersona($idpersona);
+        if (empty($arrPersona)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+        } else {
+            $arrResponse = array('status' => true, 'msg' => 'Datos encontrados', 'data' => $arrPersona);
+        }
+        echo json_encode($arrResponse);
+    }
+
+    die();
 }
 
 if ($option == "actualizar") {

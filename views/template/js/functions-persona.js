@@ -72,3 +72,31 @@ if (document.querySelector("#frmRegistro")) {
     }
   }
 }
+
+async function fntMostrar() {
+  const formData = new FormData();
+  formData.append("idpersona", id);
+  try {
+    let resp = await fetch(
+      base_url + "controllers/Persona.php?op=verregistro",
+      {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        body: formData,
+      }
+    );
+    json = await resp.json();
+    if (json.status) {
+      document.querySelector("#txtId").value = json.data.idpersona;
+      document.querySelector("#txtNombre").value = json.data.nombre;
+      document.querySelector("#txtApellido").value = json.data.apellido;
+      document.querySelector("#txtTelefono").value = json.data.telefono;
+      document.querySelector("#txtEmail").value = json.data.email;
+    } else {
+      window.location = base_url + "views/persona/";
+    }
+  } catch (error) {
+    console.log("Ocurrió un error: " + error);
+  }
+}
