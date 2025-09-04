@@ -181,3 +181,52 @@ async function fntDelete(id) {
     console.log("Ocurrió un error: " + error);
   }
 }
+
+if (document.querySelector("#frmSearch")) {
+  let frmSearch = document.querySelector("#frmSearch");
+  frmSearch.onsubmit = function (e) {
+    e.preventDefault();
+
+    let busqueda = document.querySelector("#txtBuscar").value;
+    if (busqueda == "") {
+      getPersona();
+    } else {
+      fntBuscarRegistros();
+    }
+  };
+}
+
+let inputSearch = document.querySelector("#txtBuscar");
+inputSearch.addEventListener("keyup", fntInputSearch, true);
+
+async function fntBuscarRegistros() {
+  document.querySelector("#tblPersonas").innerHTML = "";
+  try {
+    let formData = new FormData(frmSearch);
+    let resp = await fetch(base_url + "controllers/Persona.php?op=buscar", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      body: formData,
+    });
+    console.log(resp);
+    //   json = await resp.json();
+    //   if (json.status) {
+    //     swal("Eliminar", json.msg, "success");
+    //     document.querySelector("#row_" + id).remove();
+    //   } else {
+    //     swal("Eliminar", json.msg, "error");
+    //   }
+  } catch (error) {
+    console.log("Ocurrió un error: " + error);
+  }
+}
+
+async function fntInputSearch() {
+  let busqueda = document.querySelector("#txtBuscar").value;
+  if (busqueda == "") {
+    getPersona();
+  } else {
+    fntBuscarRegistros();
+  }
+}

@@ -101,4 +101,10 @@ if ($option == "eliminar") {
     }
 }
 
+if ($option == "buscar") {
+    if ($_POST) {
+        print_r($_POST);
+    }
+}
+
 die();
