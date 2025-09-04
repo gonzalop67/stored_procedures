@@ -40,4 +40,11 @@ class PersonaModel
         $sql = $sql->fetch_object();
         return $sql;
     }
+
+    public function delPersona(int $idpersona)
+    {
+        $sql = $this->conexion->query("CALL delete_persona('{$idpersona}')");
+        $sql = $sql->fetch_object();
+        return $sql;
+    }
 }

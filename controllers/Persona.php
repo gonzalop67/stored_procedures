@@ -85,7 +85,20 @@ if ($option == "actualizar") {
 }
 
 if ($option == "eliminar") {
-    echo "Eliminar una personas";
+    if ($_POST) {
+        if (empty($_POST['idpersona'])) {
+            $arrResponse = array('status' => false, 'msg' => 'Error de datos');
+        } else {
+            $idPersona = intval($_POST['idpersona']);
+            $arrInfo = $objPersona->delPersona($idPersona);
+            if ($arrInfo->id) {
+                $arrResponse = array('status' => true, 'msg' => 'Registro eliminado');
+            } else {
+                $arrResponse = array('status' => false, 'msg' => 'Error al eliminar');
+            }
+        }
+        echo json_encode($arrResponse);
+    }
 }
 
 die();

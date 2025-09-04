@@ -128,7 +128,7 @@ if (document.querySelector("#frmEditar")) {
 
     try {
       const data = new FormData(frmEditar);
-      let resp = await fetch(base_url + "controllers/Persona.php?op=actualizar", {
+      let resp = await fetch(base_url + "controllers/Persona.php?op=Eliminar", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -136,12 +136,48 @@ if (document.querySelector("#frmEditar")) {
       });
       json = await resp.json();
       if (json.status) {
-        swal("Actualizar", json.msg, "success");
+        swal("Eliminar", json.msg, "success");
       } else {
-        swal("Actualizar", json.msg, "error");
+        swal("Eliminar", json.msg, "error");
       }
     } catch (error) {
       console.log("Ocurrió un error: " + error);
     }
+  }
+}
+
+function fntDelPersona(id) {
+  swal({
+    title: "¿Realmente quiere eliminar el registro?",
+    text: "",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete) => {
+    if (willDelete) {
+      fntDelete(id);
+    }
+  });
+}
+
+async function fntDelete(id) {
+  try {
+    let formData = new FormData();
+    formData.append("idpersona", id);
+    let resp = await fetch(base_url + "controllers/Persona.php?op=eliminar", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      body: formData,
+    });
+    json = await resp.json();
+    if (json.status) {
+      swal("Eliminar", json.msg, "success");
+      document.querySelector("#row_" + id).remove();
+    } else {
+      swal("Eliminar", json.msg, "error");
+    }
+  } catch (error) {
+    console.log("Ocurrió un error: " + error);
   }
 }
